@@ -4,7 +4,7 @@
   - Image path should be entered inside of double inverted commas.
 <br>
 <h2>Usage</h2>
-'''
-ssdcsdc
-'''
 
+```
+python imetadata.py "Path of the image"
+```
