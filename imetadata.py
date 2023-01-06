@@ -36,43 +36,46 @@ args = parser.parse_args()
 # Path to the image or video
 file = args.image
 
-try:
-    # Open the image file. We open the file in binary format for reading.
-    image = Image.open(file)
-    # The ._getexif() method returns a dictionary. .items() method returns a list of all dictionary keys and values.
-    gps_coords = {}
-    # We check if exif data are defined for the image.
-    if image._getexif() == None:
-        print(f"{file} contains no exif data.")
-    # If exif data are defined we can cycle through the tag, and value for the file.
-    else:
-        for tag, value in image._getexif().items():
-            # If you print the tag without running it through the TAGS.get() method you'll get numerical values for every tag. We want the tags in human-readable form.
-            # You can see the tags and the associated decimal number in the exif standard here: https://exiv2.org/tags.html
-            tag_name = TAGS.get(tag)
-            if tag_name == "GPSInfo":
-                for key, val in value.items():
-                    # Print the GPS Data value for every key to the screen.
-                    print(f"{GPSTAGS.get(key)} - {val}")
-                    # We add Latitude data to the gps_coord dictionary which we initialized in line 110.
-                    if GPSTAGS.get(key) == "GPSLatitude":
-                        gps_coords["lat"] = val
-                    # We add Longitude data to the gps_coord dictionary which we initialized in line 110.
-                    elif GPSTAGS.get(key) == "GPSLongitude":
-                        gps_coords["lon"] = val
-                    # We add Latitude reference data to the gps_coord dictionary which we initialized in line 110.
-                    elif GPSTAGS.get(key) == "GPSLatitudeRef":
-                        gps_coords["lat_ref"] = val
-                    # We add Longitude reference data to the gps_coord dictionary which we initialized in line 110.
-                    elif GPSTAGS.get(key) == "GPSLongitudeRef":
-                        gps_coords["lon_ref"] = val
-            else:
-                # We print data not related to the GPSInfo.
-                print(f"{tag_name} - {value}")
-        # We print the longitudinal and latitudinal data which has been formatted for Google Maps. We only do so if the GPS Coordinates exists.
-        if gps_coords:
-            print(create_google_maps_url(gps_coords))
-        # Change back to the original working directory.
-except IOError:\
-    print("File format not supported!")
+def metadata():
+    try:
+        # Open the image file. We open the file in binary format for reading.
+        image = Image.open(file)
+        # The ._getexif() method returns a dictionary. .items() method returns a list of all dictionary keys and values.
+        gps_coords = {}
+        # We check if exif data are defined for the image.
+        if image._getexif() == None:
+            print(f"{file} contains no exif data.")
+        # If exif data are defined we can cycle through the tag, and value for the file.
+        else:
+            for tag, value in image._getexif().items():
+                # If you print the tag without running it through the TAGS.get() method you'll get numerical values for every tag. We want the tags in human-readable form.
+                # You can see the tags and the associated decimal number in the exif standard here: https://exiv2.org/tags.html
+                tag_name = TAGS.get(tag)
+                if tag_name == "GPSInfo":
+                    for key, val in value.items():
+                        # Print the GPS Data value for every key to the screen.
+                        print(f"{GPSTAGS.get(key)} - {val}")
+                        # We add Latitude data to the gps_coord dictionary which we initialized in line 110.
+                        if GPSTAGS.get(key) == "GPSLatitude":
+                            gps_coords["lat"] = val
+                        # We add Longitude data to the gps_coord dictionary which we initialized in line 110.
+                        elif GPSTAGS.get(key) == "GPSLongitude":
+                            gps_coords["lon"] = val
+                        # We add Latitude reference data to the gps_coord dictionary which we initialized in line 110.
+                        elif GPSTAGS.get(key) == "GPSLatitudeRef":
+                            gps_coords["lat_ref"] = val
+                        # We add Longitude reference data to the gps_coord dictionary which we initialized in line 110.
+                        elif GPSTAGS.get(key) == "GPSLongitudeRef":
+                            gps_coords["lon_ref"] = val
+                else:
+                    # We print data not related to the GPSInfo.
+                    print(f"{tag_name} - {value}")
+            # We print the longitudinal and latitudinal data which has been formatted for Google Maps. We only do so if the GPS Coordinates exists.
+            if gps_coords:
+                print(create_google_maps_url(gps_coords))
+            # Change back to the original working directory.
+    except IOError:\
+        print("File format not supported!")
 
+if __name__ == '__main__':
+    metadata()
