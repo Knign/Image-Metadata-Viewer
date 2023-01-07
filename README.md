@@ -1,6 +1,5 @@
 <h1>Image Metadata Viewer</h1>
 
-  - Simple script that extracts the image metadata
   - Image path should be entered inside of double inverted commas
   - Gives the exact location that the photo was taken
 <br>
