@@ -1,16 +1,11 @@
-<h1>Image Metadata Viewer</h1>
-  
+# Image Metadata Viewer
   - Gives the exact location that the photo was taken
-<br>
 
-<h2>Arguments</h2>
-  
+## Arguments
   - Positional:
     - Image path
-<br>
 
-<h2>Usage</h2>
-
+## Usage
 ```
 python imetadata.py "Path of the image"
 ```
